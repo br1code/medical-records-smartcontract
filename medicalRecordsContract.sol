@@ -2,8 +2,6 @@ pragma solidity ^0.5.0;
 
 contract MedicalRecords {
     
-    address[] private patients;
-    
     struct MedicalRecord {
         uint age;
         string name;
@@ -22,10 +20,6 @@ contract MedicalRecords {
         
         MedicalRecord storage medicalRecord = medicalRecords[patient];
         
-        if (!medicalRecord.exists) {
-            patients.push(patient);
-        }
-        
         medicalRecord.age = age;
         medicalRecord.name = name;
         medicalRecord.bloodGroup = bloodGroup;
@@ -37,7 +31,8 @@ contract MedicalRecords {
         
         if (medicalRecord.exists) {
             string memory prevAccessRecord = accessRecords[patient];
-            string memory newAccessRecord = string(abi.encodePacked(prevAccessRecord, timeStamp, ' ', name, ' - ')); 
+            string memory newAccessRecord = string(abi.encodePacked(prevAccessRecord, timeStamp, ' ', name, ' - '));
+             
             accessRecords[patient] = newAccessRecord;
             
             emit onMedicalRecordRequested(medicalRecord.age, medicalRecord.name, medicalRecord.bloodGroup);
