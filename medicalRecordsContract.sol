@@ -15,6 +15,12 @@ contract MedicalRecords {
 
     event onMedicalRecordRequested(uint age, string name, string bloodGroup);
 
+    function getMedicalRecord() public view returns (uint, string memory, string memory) {
+        MedicalRecord storage medicalRecord = medicalRecords[msg.sender];
+
+        return (medicalRecord.age, medicalRecord.name, medicalRecord.bloodGroup);
+    }
+
     function upsertMedicalRecord(uint age, string memory name, string memory bloodGroup) public {
 
         MedicalRecord storage medicalRecord = medicalRecords[msg.sender];
@@ -29,6 +35,7 @@ contract MedicalRecords {
         MedicalRecord storage medicalRecord = medicalRecords[patient];
 
         if (medicalRecord.exists) {
+
             string memory prevAccessRecord = accessRecords[patient];
             string memory newAccessRecord = string(abi.encodePacked(prevAccessRecord, timeStamp, ' ', name, ' - '));
 
